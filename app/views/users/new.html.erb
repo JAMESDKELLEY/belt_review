@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Events</title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<div>
+			<div>
+			<h1>Register</h1>
+			<form action="/users" method="post">
+			<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+			</div>
+			<div>
+				<label>Name:</label>
+				<input type="text" name="user[name]">
+			</div>
+			<br>
+			<div>
+				<label>Email:</label>
+				<input type="text" name="user[email]">
+			</div>
+			<br>
+			<div>
+				<label>City:</label>
+				<input type="text" name="user[city]">
+			</div>
+			<br>
+			<div>
+				<label>State:</label>
+				<select name="user[state]">
+					<% @states.each do |state| %>
+						<option value="<%= state.id %>"><%= state.state %></option>
+					<% end %>
+				</select>
+			</div>
+			<br>
+			<div>
+				<label>Password:</label>
+				<input type="password" name="user[password]">
+			</div>
+			<br>
+			<div>
+				<label>Confirm PW:</label>
+				<input type="password" name="user[password_confirmation]">
+			</div>
+			<br>
+			<div>
+				<input type="submit" value="Submit">
+			</div>
+		</form>
+		<div>
+			<% if flash[:registration_errors] %>
+				 <% flash[:registration_errors].each do |error| %>
+				 	<p class="error"><%= error %></p>
+				 <% end %>
+			<% end %>
+		</div>
+		<div>
+			<h1>Login</h1>
+		</div>
+		<div>
+			<form action="/sessions" method="post">
+			<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+				<div>
+					<label>Email:</label>
+					<input type="text" name="login[email]">
+				</div>
+				<br>
+				<div>
+					<label>Password:</label>
+					<input type="password" name="login[password]">
+				</div>
+				<br>
+				<div>
+					<input type="submit" value="Login">
+				</div>
+			</form>
+			<div>
+				<% if flash[:login_errors] %>
+					 <% flash[:login_errors].each do |error| %>
+					 	<p class="error"><%= error %></p>
+					 <% end %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

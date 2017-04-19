@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Events</title>
+</head>
+<body>
+	<div>
+		<h1 class="inline-block">Welcome, <%= @current_user.name %></h1>
+		<a class="header_link" href="/logout">Logout</a>
+		<a class="header_link" href="/users/<% @current_user.id %>/edit">Edit My Profile</a>
+	</div>
+	<div>
+		
+	</div>
+	<div>
+		<!-- out of state events -->
+		<h3>Out of State Events</h3>
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>Date</th>
+				<th>City</th>
+				<th>State</th>
+				<th>Host</th>
+				<th>Action</th>
+			</tr>
+			<tr>
+				<% @out_of_state_events.each do |event| %>
+					<tr>
+						<td><%= event.name %></td>
+						<td><%= event.date %></td>
+						<td><%= event.city %></td>
+						<td><%= event.state.state %></td>
+						<td><%= event.user.name %></td>
+						<td>
+							<% if event.user == @current_user %>
+								<a href="/events/<%= event.id %>/edit">Edit</a>
+								<a href="/events/<%= event.id %>" data-method="delete">Delete</a>
+							<% elsif event.attendees.include? current_user %>
+								<span>Joining</span>
+								<a href="/eventrosters/<%= event.id %>" data-method="delete">Cancel</a>		
+							<% else %>
+								<a href="/eventrosters/<%= event.id %>" data-method="post">Join</a>				
+							<% end %>
+						</td>
+					</tr>
+				<% end %>
+			</tr>
+		</table>	
+
+	</div>
+	<div>
+		<!-- in state events -->
+		<h3>In State Events</h3>
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>Date</th>
+				<th>City</th>
+				<th>Host</th>
+				<th>Action</th>
+			</tr>
+			<tr>
+				<% @in_state_events.each do |event| %>
+					<tr>
+						<td><%= event.name %></td>
+						<td><%= event.date %></td>
+						<td><%= event.city %></td>
+						<td><%= event.user.name %></td>
+						<!-- actions -->
+						<td>
+							<% if event.user == @current_user %>
+								<a href="/events/<%= event.id %>/edit">Edit</a>
+								<a href="/events/<%= event.id %>" data-method="delete">Delete</a>
+							<% elsif event.attendees.include? current_user %>
+								<span>Joining</span>
+								<a href="/eventrosters/<%= event.id %>" data-method="delete">Cancel</a>		
+							<% else %>
+								<a href="/eventrosters/<%= event.id %>" data-method="post">Join</a>				
+							<% end %>
+						</td>
+					</tr>
+				<% end %>
+			</tr>
+		</table>	
+	</div>
+	<div>
+		<h3>Add New Event</h3>
+		<!-- form for making new events -->
+		<form action= "/events"	method="post">
+			<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+			<div>
+				<label>Name:</label>
+				<input type="text" name="event[name]">
+			</div>
+			<br>
+			<div>
+				<label>Date:</label>
+				<input type="date" name="event[date]">
+			</div>
+			<br>
+			<div>
+				<label>City:</label>
+				<input type="text" name="event[city]">
+			</div>
+			<br>
+			<div>
+				<label>State:</label>
+				<select name="event[state]">
+					<% @states.each do |state| %>
+						<option value="<%= state.id %>"><%= state.state %></option>
+					<% end %>
+				</select>
+			</div>
+			<br>
+			<div>
+				<input type="submit" value="Create Event">
+			</div>
+		</form>
+	</div>
+
+</body>
+</html>
